@@ -1,13 +1,18 @@
-import { Box, Heading } from "@chakra-ui/react"
+import { Box, Heading } from "@chakra-ui/react";
 
 const Header = () => {
   return (
     <Box
-      position="fixed"
+      position="sticky"
       top={0}
       left={0}
       right={0}
-      backgroundColor="#18181b"
+      height={"55px"}
+      data-state="open"
+      _open={{
+        animation: "show-down .5s ease-out",
+      }}
+      backgroundColor="#1d1d1d"
       display={"flex"}
       justifyContent={"center"}
       padding={"3"}
@@ -15,7 +20,7 @@ const Header = () => {
     >
       <Heading>Task Manager</Heading>
     </Box>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

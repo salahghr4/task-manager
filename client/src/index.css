@@ -13,4 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@keyframes show-down {
+  from {
+    transform: translateY(-200px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 
