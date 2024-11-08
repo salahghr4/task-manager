@@ -1,15 +1,13 @@
 import { Flex } from "@chakra-ui/react";
+import { FC } from "react";
 
-type MainProps = {
-  children: React.ReactElement;
-};
-
-const Main = ({ children }: MainProps) => {
+const Main: FC<{children: React.ReactNode}> = ({ children }) => {
   return (
     <Flex
-      justify={"center"}
-      minH={"calc(100vh - 55px)"}
-      pt={"3rem"}
+      justify={"space-between"}
+      minH={"100vh"}
+      gap={"3rem"}
+      p={"4rem"}
     >
       {children}
     </Flex>

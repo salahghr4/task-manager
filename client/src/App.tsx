@@ -1,17 +1,16 @@
-import Form from './components/Form'
-import Header from './components/Header'
-import Main from './components/Main'
+import Main from "@/components/Main";
+import SideBar from "./components/SideBar";
+import Tasks from "./components/Tasks";
 
-function App() {
-
+const App = () => {
   return (
     <>
-      <Header />
       <Main>
-        <Form />
+        <SideBar />
+        <Tasks />
       </Main>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
