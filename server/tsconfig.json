@@ -4,7 +4,7 @@
     "target": "ESNext",
     "module": "NodeNext",
     "baseUrl": "./src",
-    "rootDir": ".",
+    "rootDir": "./src",
     "moduleResolution": "NodeNext",
     "typeRoots": ["./node_modules/@types"],
     "sourceMap": true,
