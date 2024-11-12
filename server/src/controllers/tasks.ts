@@ -34,7 +34,6 @@ export const createTask = async (req: Request, res: Response) => {
       res.status(400).json({
         success: false,
         message: error.errors.title.message,
-        errors: "Validation error",
       });
     } else {
       res.status(500).json({
@@ -75,10 +74,73 @@ export const getTask = async (req: Request, res: Response) => {
   }
 };
 
-export const updateTask = (req: Request, res: Response) => {
-  res.status(200).json({ message: `task with id ${req.params.id} updated` });
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    const { id: taskId } = req.params;
+
+    if (!isValidObjectId(taskId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid task ID format" });
+    }
+
+    const task = await TaskModel.findByIdAndUpdate(taskId, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ success: false, message: `Task with ID ${taskId} not found` });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: `task updated successefully`, task });
+  } catch (error: any) {
+    console.error("Error updating task:", error);
+
+    if (error.name === "ValidationError") {
+      res.status(400).json({
+        success: false,
+        message: error.errors.title.message,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while updating the task",
+      });
+    }
+  }
 };
 
-export const deleteTask = (req: Request, res: Response) => {
-  res.status(200).json({ message: `task with id ${req.params.id} deleted` });
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    const { id: taskId } = req.params;
+
+    if (!isValidObjectId(taskId)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid task ID format" });
+    }
+
+    const task = await TaskModel.findByIdAndDelete(taskId);
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ success: false, message: `Task with ID ${taskId} not found` });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: `task deleted successefully` });
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while deleting the task",
+    });
+  }
 };
