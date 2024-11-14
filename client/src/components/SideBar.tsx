@@ -7,7 +7,7 @@ import { MdAssignmentLate } from 'react-icons/md';
 const SideBar = () => {
   return (
     <Flex
-      minW={'250px'}
+      minW={'230px'}
       direction={'column'}
       minH={'100%'}
       bg={'#242424'}
