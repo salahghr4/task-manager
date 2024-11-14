@@ -5,7 +5,7 @@ const Main: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <Flex
       justify={'space-between'}
-      minH={'100vh'}
+      h={'100vh'}
       gap={'3rem'}
       p={'4rem'}
     >

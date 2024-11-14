@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'PT Sans', sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
@@ -9,6 +11,62 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.1rem;
+  color: #7c7c7c;
+  letter-spacing: .5px;
+
+  .active {
+    background-color: #363636;
+    color: #cacaca;
+  }
+
+  .active::after {
+    width: 0.3rem;
+  }
+}
+
+li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 3rem;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  z-index: 0;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    z-index: -1;
+    background-color: #2d2d2d;
+    transition: all 0.3s ease-in-out;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background-color: mediumspringgreen;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+
+  &:hover {
+    &::before {
+      width: 100%;
+    }
+  }
 }
 
 @keyframes show-down {

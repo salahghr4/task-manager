@@ -8,7 +8,7 @@ const Tasks = () => {
       bg={'#242424'}
       rounded={'3xl'}
       borderWidth={'1px'}
-      borderColor={'silver'}
+      borderColor={'#505050'}
     ></Flex>
   );
 };
