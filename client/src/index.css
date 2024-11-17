@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body::selection {
+  color: #1a1a1a;
+}
+
 ul {
   display: flex;
   flex-direction: column;

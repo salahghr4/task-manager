@@ -1,9 +1,19 @@
 import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
 import { CiCirclePlus } from 'react-icons/ci';
 import TaskItem from './TaskItem';
+import { useTasks } from '../contexts/TaskProvider';
+
 const Tasks = () => {
+  const { tasks } = useTasks();
+
   return (
-    <Flex p={"1px"} overflow={'hidden'} w={'100%'} rounded={'3xl'} minH={'100%'}>
+    <Flex
+      p={'1px'}
+      overflow={'hidden'}
+      w={'100%'}
+      rounded={'3xl'}
+      minH={'100%'}
+    >
       <Flex
         w={'100%'}
         bg={'#242424'}
@@ -31,7 +41,7 @@ const Tasks = () => {
           <Box
             cursor={'pointer'}
             transition={'.3s'}
-            _hover={{ transform: 'scale(1.1)' }}
+            _hover={{ transform: 'scale(1.06)' }}
           >
             <CiCirclePlus
               size={'50px'}
@@ -40,15 +50,17 @@ const Tasks = () => {
           </Box>
         </Flex>
         <Grid
-          templateColumns={'repeat(auto-fit, minmax(350px, 1fr))'}
-          gap={'1rem'}
+          templateColumns={'repeat(auto-fit, minmax(300px, 1fr))'}
+          gap={'1.5rem'}
         >
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
-          <TaskItem />
+          {tasks.map((task) => {
+            return (
+              <TaskItem
+                task={task}
+                key={task._id}
+              />
+            );
+          })}
         </Grid>
       </Flex>
     </Flex>
