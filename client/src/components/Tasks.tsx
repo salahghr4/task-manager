@@ -1,7 +1,7 @@
-import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
-import { CiCirclePlus } from 'react-icons/ci';
-import TaskItem from './TaskItem';
+import { Flex, Grid, Heading } from '@chakra-ui/react';
 import { useTasks } from '../contexts/TaskProvider';
+import AddModal from './Modals/AddModal';
+import TaskItem from './TaskItem';
 
 const Tasks = () => {
   const { tasks } = useTasks();
@@ -38,16 +38,7 @@ const Tasks = () => {
           >
             <span className="title-stick">All</span> tasks
           </Heading>
-          <Box
-            cursor={'pointer'}
-            transition={'.3s'}
-            _hover={{ transform: 'scale(1.06)' }}
-          >
-            <CiCirclePlus
-              size={'50px'}
-              color="#6a6a6a"
-            />
-          </Box>
+          <AddModal />
         </Flex>
         <Grid
           templateColumns={'repeat(auto-fit, minmax(300px, 1fr))'}

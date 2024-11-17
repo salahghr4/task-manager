@@ -7,7 +7,6 @@ type TaskItemProp = {
 };
 
 const TaskItem = ({ task }: TaskItemProp) => {
-  console.log(task);
   
   const { title, description, createdAt, completed,  } = task;
 
