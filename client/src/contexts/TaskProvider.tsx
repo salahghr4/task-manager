@@ -1,6 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axiosInstance from '../api/apiClient';
-import { GetTasksResponse, TaskContextType, TaskType } from '../types/types';
+import {
+  GetTasksResponse,
+  TaskContextType,
+  taskInputs,
+  TaskType,
+} from '../types/types';
 import { AxiosResponse } from 'axios';
 
 type TaskProviderProps = {
@@ -14,7 +19,8 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
 
   const getAllTasks = async (): Promise<void> => {
     try {
-      const response: AxiosResponse<GetTasksResponse> = await axiosInstance.get('/tasks');
+      const response: AxiosResponse<GetTasksResponse> =
+        await axiosInstance.get('/tasks');
       const sortedTasks = response.data.tasks.sort((a, b) => {
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -26,13 +32,9 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
     }
   };
 
-  const createTask = async (
-    title: string,
-    description: string,
-    isImportant: boolean
-  ): Promise<void> => {
+  const createTask = async (data: taskInputs): Promise<void> => {
     try {
-      await axiosInstance.post('/tasks', { title, description, isImportant });
+      await axiosInstance.post('/tasks', data);
       getAllTasks();
     } catch (error) {
       console.error(error);
@@ -41,19 +43,30 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
 
   const deleteTask = async (id: string): Promise<void> => {
     try {
-      await axiosInstance.delete(`/tasks/${id}`)
-      getAllTasks()
+      await axiosInstance.delete(`/tasks/${id}`);
+      getAllTasks();
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+
+  const editTask = async (id: string, data: taskInputs): Promise<void> => {
+    try {
+      await axiosInstance.patch(`/tasks/${id}`, data);
+      getAllTasks();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getAllTasks();
   }, []);
 
   return (
-    <TasksContext.Provider value={{ tasks, setTasks, getAllTasks, createTask, deleteTask }}>
+    <TasksContext.Provider
+      value={{ tasks, setTasks, getAllTasks, createTask, deleteTask, editTask }}
+    >
       {children}
     </TasksContext.Provider>
   );

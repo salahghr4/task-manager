@@ -10,28 +10,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { CiCirclePlus } from 'react-icons/ci';
+
 import { Field } from '@/components/ui/field';
 import { Checkbox } from '@/components/ui/checkbox';
-import { LuPlus } from 'react-icons/lu';
 import { useState } from 'react';
 import { useTasks } from '../../contexts/TaskProvider';
 import { toaster } from '@/components/ui/toaster';
-import { taskInputs } from '../../types/types';
+import { MdEditDocument, MdEdit } from 'react-icons/md';
+import { taskInputs, TaskType } from '../../types/types';
 
-const AddModal = () => {
-  const emptyTask: taskInputs = {
-    title: '',
-    description: '',
-    completed: false,
-    important: false,
-  };
+const EditModal = ({ taskId, task }: { taskId: string; task: TaskType }) => {
 
-  const [taskData, setTaskData] = useState<taskInputs>(emptyTask);
+  const [taskData, setTaskData] = useState<taskInputs>({
+    description: task.description,
+    title: task.title,
+    completed: task.completed,
+    important: task.important,
+  });
+
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const { createTask } = useTasks();
+  const { editTask } = useTasks();
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaskData({ ...taskData, title: e.target.value });
@@ -44,12 +44,11 @@ const AddModal = () => {
 
   const handleSubmit = () => {
     if (taskData.title) {
-      createTask(taskData);
+      editTask(taskId, taskData);
       setError(false);
       setOpen(false);
-      setTaskData(emptyTask)
       toaster.create({
-        title: `Task created successfully`,
+        title: `Task edited successfully`,
         type: 'success',
       });
     } else setError(true);
@@ -61,14 +60,11 @@ const AddModal = () => {
     >
       <DialogTrigger asChild>
         <Box
+          _hover={{ transform: 'scale(1.1)' }}
           cursor={'pointer'}
-          transition={'.3s'}
-          _hover={{ transform: 'scale(1.06)' }}
+          title="Edit"
         >
-          <CiCirclePlus
-            size={'50px'}
-            color="#6a6a6a"
-          />
+          <MdEditDocument size={'25px'} />
         </Box>
       </DialogTrigger>
       <DialogContent
@@ -76,7 +72,7 @@ const AddModal = () => {
         bg={'#1a1a1a'}
       >
         <DialogHeader>
-          <DialogTitle fontSize={'1.4rem'}>Add Task</DialogTitle>
+          <DialogTitle fontSize={'1.4rem'}>Edit Task</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap="4">
@@ -118,6 +114,14 @@ const AddModal = () => {
             >
               Important
             </Checkbox>
+            <Checkbox
+              checked={taskData.completed}
+              onChange={() =>
+                setTaskData({ ...taskData, completed: !taskData.completed })
+              }
+            >
+              Completed
+            </Checkbox>
           </Stack>
         </DialogBody>
         <DialogFooter>
@@ -128,8 +132,8 @@ const AddModal = () => {
             onClick={handleSubmit}
             disabled={error}
           >
-            <LuPlus />
-            Create task
+            <MdEdit />
+            Edit task
           </Button>
         </DialogFooter>
         <DialogCloseTrigger />
@@ -138,4 +142,4 @@ const AddModal = () => {
   );
 };
 
-export default AddModal;
+export default EditModal;

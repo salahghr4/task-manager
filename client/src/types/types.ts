@@ -9,22 +9,20 @@ export type TaskType = {
   __v: number;
 };
 
+export type taskInputs = {
+  title: string;
+  description: string;
+  important: boolean;
+  completed: boolean;
+};
+
 export type TaskContextType = {
   tasks: TaskType[];
   setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
   getAllTasks: () => Promise<void>;
-  createTask: (
-    title: string,
-    description: string,
-    isImportant: boolean
-  ) => Promise<void>;
-  deleteTask: (id: string) => Promise<void>
-};
-export type ModalContextType = {
-  open: boolean;
-  openModal: () => void;
-  closeModal: () => void;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  createTask: (data: taskInputs) => Promise<void>;
+  deleteTask: (id: string) => Promise<void>;
+  editTask: (id: string, data: taskInputs) => Promise<void>;
 };
 
 export interface GetTasksResponse {

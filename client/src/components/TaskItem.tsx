@@ -1,14 +1,14 @@
 import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
-import { MdEditDocument } from 'react-icons/md';
 import { TaskType } from '../types/types';
 import DeleteModal from './Modals/DeleteModal';
+import EditModal from './Modals/EditModal';
 
 type TaskItemProp = {
   task: TaskType;
 };
 
 const TaskItem = ({ task }: TaskItemProp) => {
-  const { _id, title, description, createdAt, completed } = task;
+  const { _id, title, description, createdAt, completed, important } = task;
 
   return (
     <Flex
@@ -37,31 +37,43 @@ const TaskItem = ({ task }: TaskItemProp) => {
       >
         {description || 'No description'}
       </Text>
-      <small>{new Date(createdAt).toLocaleDateString()}</small>
+      <small>{new Date(createdAt).toLocaleString()}</small>
       <Flex
         mt={'6px'}
         justifyContent={'space-between'}
         alignItems={'center'}
       >
-        <Badge
-          bg={completed ? 'green.400' : 'red.400'}
-          p={'.5rem .6rem'}
-          rounded={'4xl'}
-          fontSize={'md'}
-          color={'white'}
-          fontWeight={'600'}
-        >
-          {completed ? 'Completed' : 'Incompleted'}
-        </Badge>
-        <Flex gap={'.5rem'}>
-          <Box
-            _hover={{ transform: 'scale(1.1)' }}
-            cursor={'pointer'}
-            title="Edit"
+        <Box>
+          <Badge
+            bg={completed ? 'green.400' : 'red.400'}
+            p={'.5rem .6rem'}
+            me={'2'}
+            rounded={'4xl'}
+            fontSize={'sm'}
+            color={'white'}
+            fontWeight={'600'}
           >
-            <MdEditDocument size={'25px'} />
-          </Box>
-          <DeleteModal taskId={_id}/>
+            {completed ? 'Completed' : 'Incompleted'}
+          </Badge>
+          {important && (
+            <Badge
+              bg={'yellow.400'}
+              p={'.5rem .6rem'}
+              rounded={'4xl'}
+              fontSize={'sm'}
+              color={'white'}
+              fontWeight={'600'}
+            >
+              Important
+            </Badge>
+          )}
+        </Box>
+        <Flex gap={'.5rem'}>
+          <EditModal
+            taskId={_id}
+            task={task}
+          />
+          <DeleteModal taskId={_id} />
         </Flex>
       </Flex>
     </Flex>
