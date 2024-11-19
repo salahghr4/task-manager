@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import axiosInstance from '../api/apiClient';
 import {
@@ -6,7 +7,6 @@ import {
   taskInputs,
   TaskType,
 } from '../types/types';
-import { AxiosResponse } from 'axios';
 
 type TaskProviderProps = {
   children: React.ReactNode;
@@ -59,13 +59,27 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
     }
   };
 
+  const completedTasks = tasks.filter((task) => task.completed);
+  const importantTasks = tasks.filter((task) => task.important);
+  const incompletedTasks = tasks.filter((task) => !task.completed);
+
   useEffect(() => {
     getAllTasks();
   }, []);
 
   return (
     <TasksContext.Provider
-      value={{ tasks, setTasks, getAllTasks, createTask, deleteTask, editTask }}
+      value={{
+        tasks,
+        setTasks,
+        getAllTasks,
+        createTask,
+        deleteTask,
+        editTask,
+        completedTasks,
+        importantTasks,
+        incompletedTasks,
+      }}
     >
       {children}
     </TasksContext.Provider>

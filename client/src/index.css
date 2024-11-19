@@ -34,10 +34,13 @@ ul {
 li {
   position: relative;
   padding: 0.5rem 0 0.5rem 2rem;
-  display: grid;
-  grid-template-columns: 40px 1fr;
   z-index: 0;
   cursor: pointer;
+  
+  & a {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+  }
 
   &::before {
     content: '';
