@@ -1,16 +1,18 @@
 import Main from '@/components/Main';
 import SideBar from './components/SideBar';
 import Tasks from './components/Tasks';
-import { TaskProvider } from './contexts/TaskProvider';
+import AppProvider from './providers/AppProvider';
+import { Toaster } from '@/components/ui/toaster';
 
 const App = () => {
   return (
-    <TaskProvider>
+    <AppProvider>
       <Main>
         <SideBar />
         <Tasks />
+        <Toaster />
       </Main>
-    </TaskProvider>
+    </AppProvider>
   );
 };
 

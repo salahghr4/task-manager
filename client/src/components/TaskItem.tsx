@@ -7,8 +7,7 @@ type TaskItemProp = {
 };
 
 const TaskItem = ({ task }: TaskItemProp) => {
-  
-  const { title, description, createdAt, completed,  } = task;
+  const { title, description, createdAt, completed } = task;
 
   return (
     <Flex

@@ -14,12 +14,52 @@ import { CiCirclePlus } from 'react-icons/ci';
 import { Field } from '@/components/ui/field';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LuPlus } from 'react-icons/lu';
+import { useState } from 'react';
+import { useTasks } from '../../contexts/TaskProvider';
+import { useModals } from '../../contexts/ModalProvider';
+import { toaster } from '@/components/ui/toaster';
 
 const AddModal = () => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [isImportant, setIsImportant] = useState(false);
+  const [error, setError] = useState(false);
+
+  const { open, setOpen, closeModal } = useModals();
+
+  const { createTask } = useTasks();
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    if (e.target.value) {
+      setError(false);
+    } else {
+      setError(true);
+    }
+  };
+
+  const emptyInputs = () => {
+    setTitle('');
+    setDescription('');
+    setIsImportant(false);
+  };
+
+  const handleSubmit = () => {
+    if (title) {
+      createTask(title, description, isImportant);
+      setError(false);
+      closeModal();
+      emptyInputs();
+      toaster.create({
+        title: `Task created successfully`,
+        type: 'success',
+      });
+    } else setError(true);
+  };
   return (
     <DialogRoot
-      placement={'center'}
-      motionPreset={'slide-in-bottom'}
+      open={open}
+      onOpenChange={(e) => setOpen(e.open)}
     >
       <DialogTrigger asChild>
         <Box
@@ -33,9 +73,12 @@ const AddModal = () => {
           />
         </Box>
       </DialogTrigger>
-      <DialogContent rounded={'10px'}>
+      <DialogContent
+        rounded={'10px'}
+        bg={'#1a1a1a'}
+      >
         <DialogHeader>
-          <DialogTitle>Add Task</DialogTitle>
+          <DialogTitle fontSize={'1.4rem'}>Add Task</DialogTitle>
         </DialogHeader>
         <DialogBody>
           <Stack gap="4">
@@ -43,12 +86,15 @@ const AddModal = () => {
               label="Title"
               helperText="Max 20 characters."
               required
+              invalid={error}
+              errorText="This field is required"
             >
               <Input
                 placeholder="Task title"
-                variant="subtle"
                 ps={'1.5'}
                 required
+                value={title}
+                onChange={handleTitleChange}
               />
             </Field>
             <Field
@@ -57,20 +103,29 @@ const AddModal = () => {
             >
               <Textarea
                 placeholder="Description"
-                variant="subtle"
                 ps={'1.5'}
                 resize="none"
                 rows={5}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </Field>
-            <Checkbox>Important</Checkbox>
+            <Checkbox
+              checked={isImportant}
+              onChange={() => setIsImportant(!isImportant)}
+            >
+              Important
+            </Checkbox>
           </Stack>
         </DialogBody>
         <DialogFooter>
           <DialogActionTrigger asChild>
-            <Button variant={'outline'}>Cancel</Button>
+            <Button variant={'subtle'}>Cancel</Button>
           </DialogActionTrigger>
-          <Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={error}
+          >
             <LuPlus />
             Create task
           </Button>

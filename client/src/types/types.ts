@@ -13,4 +13,19 @@ export type TaskContextType = {
   tasks: TaskType[];
   setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>;
   getAllTasks: () => Promise<void>;
+  createTask: (
+    title: string,
+    description: string,
+    isImportant: boolean
+  ) => Promise<void>;
 };
+export type ModalContextType = {
+  open: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export interface GetTasksResponse {
+  tasks: TaskType[];
+}

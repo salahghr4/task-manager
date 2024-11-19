@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axiosInstance from '../api/apiClient';
-import { TaskContextType, TaskType } from '../types/types';
+import { GetTasksResponse, TaskContextType, TaskType } from '../types/types';
+import { AxiosResponse } from 'axios';
 
 type TaskProviderProps = {
   children: React.ReactNode;
@@ -13,8 +14,26 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
 
   const getAllTasks = async (): Promise<void> => {
     try {
-      const response = await axiosInstance.get('/tasks');
-      setTasks(response.data.tasks);
+      const response: AxiosResponse<GetTasksResponse> = await axiosInstance.get('/tasks');
+      const sortedTasks = response.data.tasks.sort((a, b) => {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      });
+      setTasks(sortedTasks);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const createTask = async (
+    title: string,
+    description: string,
+    isImportant: boolean
+  ): Promise<void> => {
+    try {
+      await axiosInstance.post('/tasks', { title, description, isImportant });
+      getAllTasks();
     } catch (error) {
       console.error(error);
     }
@@ -24,10 +43,8 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
     getAllTasks();
   }, []);
 
-  const value = { tasks, setTasks, getAllTasks };
-
   return (
-    <TasksContext.Provider value={value}>
+    <TasksContext.Provider value={{ tasks, setTasks, getAllTasks, createTask }}>
       {children}
     </TasksContext.Provider>
   );
