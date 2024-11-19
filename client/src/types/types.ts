@@ -18,6 +18,7 @@ export type TaskContextType = {
     description: string,
     isImportant: boolean
   ) => Promise<void>;
+  deleteTask: (id: string) => Promise<void>
 };
 export type ModalContextType = {
   open: boolean;

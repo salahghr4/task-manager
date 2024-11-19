@@ -38,7 +38,7 @@ export const Toaster = () => {
             >
               {toast.title && <Toast.Title>{toast.title}</Toast.Title>}
               {toast.description && (
-                <Toast.Description>{toast.description}</Toast.Description>
+                <Toast.Description fontFamily={'PT Sans'}>{toast.description}</Toast.Description>
               )}
             </Stack>
             {toast.action && (

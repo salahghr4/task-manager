@@ -39,12 +39,21 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
     }
   };
 
+  const deleteTask = async (id: string): Promise<void> => {
+    try {
+      await axiosInstance.delete(`/tasks/${id}`)
+      getAllTasks()
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     getAllTasks();
   }, []);
 
   return (
-    <TasksContext.Provider value={{ tasks, setTasks, getAllTasks, createTask }}>
+    <TasksContext.Provider value={{ tasks, setTasks, getAllTasks, createTask, deleteTask }}>
       {children}
     </TasksContext.Provider>
   );

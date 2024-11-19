@@ -1,13 +1,14 @@
 import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
-import { MdEditDocument, MdDelete } from 'react-icons/md';
+import { MdEditDocument } from 'react-icons/md';
 import { TaskType } from '../types/types';
+import DeleteModal from './Modals/DeleteModal';
 
 type TaskItemProp = {
   task: TaskType;
 };
 
 const TaskItem = ({ task }: TaskItemProp) => {
-  const { title, description, createdAt, completed } = task;
+  const { _id, title, description, createdAt, completed } = task;
 
   return (
     <Flex
@@ -60,13 +61,7 @@ const TaskItem = ({ task }: TaskItemProp) => {
           >
             <MdEditDocument size={'25px'} />
           </Box>
-          <Box
-            _hover={{ transform: 'scale(1.1)' }}
-            cursor={'pointer'}
-            title="Delete"
-          >
-            <MdDelete size={'25px'} />
-          </Box>
+          <DeleteModal taskId={_id}/>
         </Flex>
       </Flex>
     </Flex>
