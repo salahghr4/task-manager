@@ -1,11 +1,10 @@
 import { Flex, Grid, Heading } from '@chakra-ui/react';
-import { useTasks } from '../contexts/TaskProvider';
+import { FC } from 'react';
+import { TaskType } from '../types/types';
 import AddModal from './Modals/AddModal';
 import TaskItem from './TaskItem';
 
-const Tasks = () => {
-  const { tasks } = useTasks();
-
+const Tasks: FC<{ tasks: TaskType[] }> = ({ tasks }) => {
   return (
     <Flex
       p={'1px'}

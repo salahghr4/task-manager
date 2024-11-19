@@ -1,7 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 import { FC } from 'react';
+import SideBar from './SideBar';
+import { Toaster } from '@/components/ui/toaster';
+import { Outlet } from 'react-router-dom';
 
-const Main: FC<{ children: React.ReactNode }> = ({ children }) => {
+const Main: FC = () => {
   return (
     <Flex
       justify={'space-between'}
@@ -9,7 +12,9 @@ const Main: FC<{ children: React.ReactNode }> = ({ children }) => {
       gap={'3rem'}
       p={'4rem'}
     >
-      {children}
+      <SideBar />
+      <Outlet />
+      <Toaster />
     </Flex>
   );
 };

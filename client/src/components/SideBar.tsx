@@ -3,8 +3,11 @@ import { IoMdHome } from 'react-icons/io';
 import { FaTasks } from 'react-icons/fa';
 import { IoCheckmarkSharp } from 'react-icons/io5';
 import { MdAssignmentLate } from 'react-icons/md';
+import { Link, useLocation } from 'react-router-dom';
 
 const SideBar = () => {
+  let { pathname } = useLocation();
+
   return (
     <Flex
       minW={'230px'}
@@ -22,21 +25,29 @@ const SideBar = () => {
         w={'100%'}
       >
         <ul>
-          <li className="active">
-            <IoMdHome size={'21px'} />
-            <Text>All tasks</Text>
+          <li className={pathname === '/' ? 'active' : ''}>
+            <Link to={'/'}>
+              <IoMdHome size={'21px'} />
+              <Text>All tasks</Text>
+            </Link>
           </li>
-          <li>
-            <IoCheckmarkSharp size={'21px'} />
-            <Text>Completed</Text>
+          <li className={pathname === '/completed' ? 'active' : ''}>
+            <Link to={'completed'}>
+              <IoCheckmarkSharp size={'21px'} />
+              <Text>Completed</Text>
+            </Link>
           </li>
-          <li>
-            <FaTasks size={'19px'} />
-            <Text>Important</Text>
+          <li className={pathname === '/important' ? 'active' : ''}>
+            <Link to={'important'}>
+              <FaTasks size={'19px'} />
+              <Text>Important</Text>
+            </Link>
           </li>
-          <li>
-            <MdAssignmentLate size={'21px'} />
-            <Text>Not completed</Text>
+          <li className={pathname === '/incompleted' ? 'active' : ''}>
+            <Link to={'incompleted'}>
+              <MdAssignmentLate size={'21px'} />
+              <Text>Not completed</Text>
+            </Link>
           </li>
         </ul>
       </Center>
