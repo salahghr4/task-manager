@@ -1,5 +1,8 @@
-import { Flex, Grid, Heading } from '@chakra-ui/react';
+import { EmptyState } from '@/components/ui/empty-state';
+import { Box, Button, Flex, Grid, Heading } from '@chakra-ui/react';
 import { FC } from 'react';
+import { CiCirclePlus } from 'react-icons/ci';
+import { FaTasks } from 'react-icons/fa';
 import { TaskType } from '../types/types';
 import AddModal from './Modals/AddModal';
 import TaskItem from './TaskItem';
@@ -37,20 +40,47 @@ const Tasks: FC<{ tasks: TaskType[] }> = ({ tasks }) => {
           >
             <span className="title-stick">All</span> tasks
           </Heading>
-          <AddModal />
+          <AddModal>
+            <Box
+              cursor={'pointer'}
+              transition={'.3s'}
+              _hover={{ transform: 'scale(1.06)' }}
+            >
+              <CiCirclePlus
+                size={'50px'}
+                color="#6a6a6a"
+              />
+            </Box>
+          </AddModal>
         </Flex>
         <Grid
           templateColumns={'repeat(auto-fit, minmax(300px, 1fr))'}
           gap={'1.5rem'}
         >
-          {tasks.map((task) => {
-            return (
+          {tasks && tasks.length ? (
+            tasks.map((task) => (
               <TaskItem
                 task={task}
                 key={task._id}
               />
-            );
-          })}
+            ))
+          ) : (
+            <EmptyState
+              icon={<FaTasks />}
+              title="No tasks available"
+              description="Add a new task to get started"
+            >
+              <AddModal>
+                <Button>
+                  Add task
+                  <CiCirclePlus
+                    size={'50px'}
+                    color="#6a6a6a"
+                  />
+                </Button>
+              </AddModal>
+            </EmptyState>
+          )}
         </Grid>
       </Flex>
     </Flex>

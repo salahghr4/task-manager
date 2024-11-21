@@ -1,4 +1,3 @@
-import { Box, Button, Input, Stack, Textarea } from '@chakra-ui/react';
 import {
   DialogActionTrigger,
   DialogBody,
@@ -10,17 +9,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Box, Button, Input, Stack, Textarea } from '@chakra-ui/react';
 
-import { Field } from '@/components/ui/field';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Field } from '@/components/ui/field';
 import { useState } from 'react';
+import { MdEdit, MdEditDocument } from 'react-icons/md';
 import { useTasks } from '../../contexts/TaskProvider';
-import { toaster } from '@/components/ui/toaster';
-import { MdEditDocument, MdEdit } from 'react-icons/md';
 import { taskInputs, TaskType } from '../../types/types';
 
 const EditModal = ({ taskId, task }: { taskId: string; task: TaskType }) => {
-
   const [taskData, setTaskData] = useState<taskInputs>({
     description: task.description,
     title: task.title,
@@ -47,10 +45,6 @@ const EditModal = ({ taskId, task }: { taskId: string; task: TaskType }) => {
       editTask(taskId, taskData);
       setError(false);
       setOpen(false);
-      toaster.create({
-        title: `Task edited successfully`,
-        type: 'success',
-      });
     } else setError(true);
   };
   return (

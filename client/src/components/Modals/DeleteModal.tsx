@@ -1,4 +1,3 @@
-import { Box, Button } from '@chakra-ui/react';
 import {
   DialogActionTrigger,
   DialogBody,
@@ -10,10 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { MdDelete } from 'react-icons/md';
+import { Box, Button } from '@chakra-ui/react';
 import { useState } from 'react';
+import { MdDelete } from 'react-icons/md';
 import { useTasks } from '../../contexts/TaskProvider';
-import { toaster } from '../ui/toaster';
 
 const DeleteModal = ({ taskId }: { taskId: string }) => {
   const [open, setOpen] = useState(false);
@@ -22,10 +21,6 @@ const DeleteModal = ({ taskId }: { taskId: string }) => {
   const handleSubmit = () => {
     deleteTask(taskId);
     setOpen(false);
-    toaster.create({
-      type: 'success',
-      description: 'Task deleted successfully',
-    });
   };
 
   return (

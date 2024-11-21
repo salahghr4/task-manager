@@ -1,4 +1,4 @@
-import { Box, Button, Input, Stack, Textarea } from '@chakra-ui/react';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   DialogActionTrigger,
   DialogBody,
@@ -10,16 +10,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { CiCirclePlus } from 'react-icons/ci';
 import { Field } from '@/components/ui/field';
-import { Checkbox } from '@/components/ui/checkbox';
-import { LuPlus } from 'react-icons/lu';
+import { Button, Input, Stack, Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
+import { LuPlus } from 'react-icons/lu';
 import { useTasks } from '../../contexts/TaskProvider';
-import { toaster } from '@/components/ui/toaster';
 import { taskInputs } from '../../types/types';
 
-const AddModal = () => {
+const AddModal = ({ children }: { children: React.ReactElement }) => {
   const emptyTask: taskInputs = {
     title: '',
     description: '',
@@ -47,11 +45,7 @@ const AddModal = () => {
       createTask(taskData);
       setError(false);
       setOpen(false);
-      setTaskData(emptyTask)
-      toaster.create({
-        title: `Task created successfully`,
-        type: 'success',
-      });
+      setTaskData(emptyTask);
     } else setError(true);
   };
   return (
@@ -59,18 +53,7 @@ const AddModal = () => {
       open={open}
       onOpenChange={(e) => setOpen(e.open)}
     >
-      <DialogTrigger asChild>
-        <Box
-          cursor={'pointer'}
-          transition={'.3s'}
-          _hover={{ transform: 'scale(1.06)' }}
-        >
-          <CiCirclePlus
-            size={'50px'}
-            color="#6a6a6a"
-          />
-        </Box>
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         rounded={'10px'}
         bg={'#1a1a1a'}

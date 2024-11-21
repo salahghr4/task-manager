@@ -1,3 +1,4 @@
+import { toaster } from '@/components/ui/toaster';
 import { AxiosResponse } from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import axiosInstance from '../api/apiClient';
@@ -17,45 +18,81 @@ const TasksContext = createContext<TaskContextType>({} as TaskContextType);
 const TaskProvider = ({ children }: TaskProviderProps) => {
   const [tasks, setTasks] = useState<TaskType[]>([]);
 
+  const hanldeFetchError = (error: any) => {
+    if (error.request) {
+      toaster.create({
+        title: `Failed to connect to the server`,
+        type: 'error',
+        description:
+          'Please check your internet connection or try again later.',
+        duration: 5000,
+      });
+    } else if (error.response) {
+      toaster.create({
+        title: `Error ${error.response.status}`,
+        type: 'error',
+        description: error.response.statusText,
+        duration: 5000,
+      });
+    } else {
+      toaster.create({
+        title: 'Unexpected Error',
+        type: 'error',
+        description: error.message,
+        duration: 5000,
+      });
+    }
+  };
   const getAllTasks = async (): Promise<void> => {
     try {
-      const response: AxiosResponse<GetTasksResponse> =
-        await axiosInstance.get('/tasks');
+      const response: AxiosResponse<GetTasksResponse> = await axiosInstance.get('/tasks');
       const sortedTasks = response.data.tasks.sort((a, b) => {
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
       });
       setTasks(sortedTasks);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      hanldeFetchError(error);
     }
   };
 
   const createTask = async (data: taskInputs): Promise<void> => {
     try {
       await axiosInstance.post('/tasks', data);
-      getAllTasks();
+      await getAllTasks();
+      toaster.create({
+        title: `Task created successfully`,
+        type: 'success',
+      });
     } catch (error) {
-      console.error(error);
+      hanldeFetchError(error);
     }
   };
 
   const deleteTask = async (id: string): Promise<void> => {
     try {
       await axiosInstance.delete(`/tasks/${id}`);
-      getAllTasks();
+      await getAllTasks();
+      toaster.create({
+        type: 'success',
+        description: 'Task deleted successfully',
+      });
     } catch (error) {
-      console.error(error);
+      hanldeFetchError(error);
     }
   };
 
   const editTask = async (id: string, data: taskInputs): Promise<void> => {
     try {
       await axiosInstance.patch(`/tasks/${id}`, data);
-      getAllTasks();
+      await getAllTasks();
+      toaster.create({
+        title: `Task edited successfully`,
+        type: 'success',
+      });
     } catch (error) {
-      console.log(error);
+      hanldeFetchError(error);
     }
   };
 
