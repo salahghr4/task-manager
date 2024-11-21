@@ -20,7 +20,6 @@ const tasksSchema = new Schema<Itask>(
       type: String,
       trim: true,
       default: "",
-      maxlength: [300, "description cannot be more than 300 characters"],
     },
     completed: {
       type: Boolean,
