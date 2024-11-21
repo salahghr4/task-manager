@@ -2,6 +2,7 @@ import { Badge, Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { TaskType } from '../types/types';
 import DeleteModal from './Modals/DeleteModal';
 import EditModal from './Modals/EditModal';
+import { useTasks } from '../contexts/TaskProvider';
 
 type TaskItemProp = {
   task: TaskType;
@@ -9,6 +10,7 @@ type TaskItemProp = {
 
 const TaskItem = ({ task }: TaskItemProp) => {
   const { _id, title, description, createdAt, completed, important } = task;
+  const { toggleCompleted } = useTasks()
 
   return (
     <Flex
@@ -52,17 +54,18 @@ const TaskItem = ({ task }: TaskItemProp) => {
             fontSize={'sm'}
             color={'white'}
             fontWeight={'600'}
-          >
+            onClick={() => toggleCompleted(_id, completed)}
+            >
             {completed ? 'Completed' : 'Incompleted'}
           </Badge>
           {important && (
             <Badge
-              bg={'yellow.400'}
-              p={'.5rem .6rem'}
-              rounded={'4xl'}
-              fontSize={'sm'}
-              color={'white'}
-              fontWeight={'600'}
+            bg={'yellow.400'}
+            p={'.5rem .6rem'}
+            rounded={'4xl'}
+            fontSize={'sm'}
+            color={'white'}
+            fontWeight={'600'}
             >
               Important
             </Badge>

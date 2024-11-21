@@ -45,7 +45,8 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
   };
   const getAllTasks = async (): Promise<void> => {
     try {
-      const response: AxiosResponse<GetTasksResponse> = await axiosInstance.get('/tasks');
+      const response: AxiosResponse<GetTasksResponse> =
+        await axiosInstance.get('/tasks');
       const sortedTasks = response.data.tasks.sort((a, b) => {
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -96,6 +97,19 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
     }
   };
 
+  const toggleCompleted = async (id: string, completed: boolean): Promise<void> => {
+    try {
+      await axiosInstance.patch(`/tasks/${id}`, { completed: !completed });
+      await getAllTasks();
+      toaster.create({
+        title: `Task set to ${completed ? 'incompleted' : 'completed'} successfully`,
+        type: 'success',
+      });
+    } catch (error) {
+      hanldeFetchError(error);
+    }
+  };
+
   const completedTasks = tasks.filter((task) => task.completed);
   const importantTasks = tasks.filter((task) => task.important);
   const incompletedTasks = tasks.filter((task) => !task.completed);
@@ -113,6 +127,7 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
         createTask,
         deleteTask,
         editTask,
+        toggleCompleted,
         completedTasks,
         importantTasks,
         incompletedTasks,

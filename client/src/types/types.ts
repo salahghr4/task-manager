@@ -23,6 +23,7 @@ export type TaskContextType = {
   createTask: (data: taskInputs) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
   editTask: (id: string, data: taskInputs) => Promise<void>;
+  toggleCompleted: (id: string, completed: boolean) => Promise<void>;
   completedTasks: TaskType[];
   importantTasks: TaskType[];
   incompletedTasks: TaskType[];
