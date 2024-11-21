@@ -80,7 +80,6 @@ const AddModal = ({ children }: { children: React.ReactElement }) => {
             </Field>
             <Field
               label="Description"
-              helperText="Max 300 characters."
             >
               <Textarea
                 placeholder="Description"
